@@ -1,4 +1,6 @@
+from cmath import sqrt
 from csv import reader
+from statistics import variance
 
 def load_csv(filename):
 	dataset = list()
@@ -43,3 +45,30 @@ def normalize(dataset):
 	for row in dataset:
 		for i in range(len(row)):
 			row[i] = (row[i] - mm[i][0]) / (mm[i][1] - mm[i][0])
+
+
+def column_means(dataset):
+	means = [0] * len(dataset[0])
+	for i in range(len(dataset[0])):
+		col_values = [row[i] for row in dataset]
+		means[i] = sum(col_values) / float(len(dataset))
+	return means
+
+def column_stdevs(dataset):
+	stdevs = [0] * len(dataset[0])
+	means = column_means(dataset)
+	for i in range(len(dataset[0])):
+		squared_diff = [pow(row[i] - means[i], 2) for row in dataset]
+		stdevs[i] = sum(squared_diff)
+	stdevs = [(x/(float(len(dataset) - 1))) ** 0.5 for x in stdevs]
+	return stdevs
+		
+
+def standardize(dataset):
+	means = column_means(dataset)
+	stdevs = column_stdevs(dataset)
+
+	for row in dataset:
+		for i in range(len(row)):
+			row[i] = (row[i] - means[i]) / stdevs[i]
+	
