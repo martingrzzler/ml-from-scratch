@@ -1,5 +1,6 @@
 from cmath import sqrt
 from csv import reader
+import enum
 from random import randrange
 from statistics import variance
 
@@ -85,4 +86,35 @@ def train_test_split(dataset, split=0.6):
 
 	return train, test
 
+def cross_validation_split(dataset, folds=3):
+	dataset_split = list()
+	dataset_copy = list(dataset)
+	fold_size = int(len(dataset) / folds)
+
+	for i in range(folds):
+		fold = list()
+		while len(fold) < fold_size:
+			index = randrange(len(dataset_copy))
+			fold.append(dataset_copy.pop(index))
+		dataset_split.append(fold)
+	return dataset_split
+
+def accuracy(actual, predicted):
+	correct = 0 
+	for i in range(len(actual)):
+		if actual[i] == predicted[i]:
+			correct+=1
+	return correct / float(len(actual)) * 100.0
+
+def confusion_matrix(actual, predicted):
+	unique = set(actual)
+	matrix = [list([0] * len(unique)) for x in range(len(unique))]
+	lookup = dict()
+	for i, value in enumerate(unique):
+		lookup[value] = i
+	for i in range(len(actual)):
+		x = lookup[actual[i]]
+		y = lookup[predicted[i]]
+		matrix[y][x]+=1
+	return unique, matrix
 
