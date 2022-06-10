@@ -1,17 +1,11 @@
-from data_prep import column_means, column_stdevs, load_csv, normalize, standardize, str_column_to_float
-
-diabetes = 'pima-indians-diabetes.csv'
-iris = 'iris.csv'
+from random import seed
+from data_prep import column_means, column_stdevs, load_csv, normalize, standardize, str_column_to_float, train_test_split
 
 
-dataset = load_csv("./datasets/" + diabetes)
+dataset = [[1], [2], [3], [4], [5], [6], [7], [8], [9], [10]]
 
-for c in range(len(dataset[0])):
-	str_column_to_float(dataset, c)
+seed(1)
+train, test = train_test_split(dataset)
 
-
-print(dataset[0])
-
-standardize(dataset)
-
-print(dataset[0])
+print(train)
+print(test)

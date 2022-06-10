@@ -1,5 +1,6 @@
 from cmath import sqrt
 from csv import reader
+from random import randrange
 from statistics import variance
 
 def load_csv(filename):
@@ -72,3 +73,16 @@ def standardize(dataset):
 		for i in range(len(row)):
 			row[i] = (row[i] - means[i]) / stdevs[i]
 	
+def train_test_split(dataset, split=0.6):
+	train = list()
+	train_size = len(dataset) * split
+	# list() creates copy
+	test = list(dataset)
+
+	while len(train) < train_size:
+		index = randrange(len(test))
+		train.append(test.pop(index))
+
+	return train, test
+
+
