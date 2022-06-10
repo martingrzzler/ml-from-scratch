@@ -107,14 +107,34 @@ def accuracy(actual, predicted):
 	return correct / float(len(actual)) * 100.0
 
 def confusion_matrix(actual, predicted):
-	unique = set(actual)
-	matrix = [list([0] * len(unique)) for x in range(len(unique))]
+	classes = set(actual)
+	matrix = [list([0] * len(classes)) for x in range(len(classes))]
 	lookup = dict()
-	for i, value in enumerate(unique):
+	for i, value in enumerate(classes):
 		lookup[value] = i
 	for i in range(len(actual)):
 		x = lookup[actual[i]]
 		y = lookup[predicted[i]]
 		matrix[y][x]+=1
-	return unique, matrix
+	return classes, matrix
+
+def print_confusion_matrix(M, classes):
+	print(' A ' + ' '.join(str(x) for x in classes))
+	print('P---')
+	for i, x in enumerate(classes):
+		print("%s| %s" % (x, ' '.join(str(x) for x in M[i])))
+
+def mean_absolute_error(actual, predicted):
+	sum_error = 0
+	for i in range(len(actual)):
+		sum_error += abs(predicted[i] - actual[i])
+	return sum_error / len(actual)
+
+def root_mean_squared_error(actual, predicted):
+	sum_error = 0
+	for i in range(len(actual)):
+		sum_error += (predicted[i] - actual[i]) ** 2
+	return (sum_error / len(actual))**0.5
+
+
 
